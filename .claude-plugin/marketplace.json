@@ -1,9 +1,9 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "clawbio",
+  "name": "clawbiocrop",
   "metadata": {
-    "description": "Bioinformatics-native AI agent skill library for Claude Code.",
-    "version": "0.3.0"
+    "description": "Crop & plant bioinformatics AI agent skill library for Claude Code.",
+    "version": "0.4.0"
   },
   "owner": {
     "name": "Manuel Corpas",
@@ -11,28 +11,28 @@
   },
   "plugins": [
     {
-      "name": "clawbio",
-      "description": "31 bioinformatics skills: pharmacogenomics, ancestry PCA, scRNA-seq, metagenomics, variant annotation, genome comparison, GWAS, proteomics, methylation clocks, and more. Local-first, reproducible, privacy-focused.",
-      "version": "0.3.0",
+      "name": "clawbiocrop",
+      "description": "Crop & plant bioinformatics skills for Claude Code: SNP-Seek (3K rice genomes), RicePilaf post-GWAS browser, crop GWAS, crop genome annotation, Crop/Plant/Trait ontologies, BUSCO, phylogenetics, RNA-seq DE, and variant calling. Local-first, reproducible, breeding-focused.",
+      "version": "0.4.0",
       "author": {
         "name": "Manuel Corpas",
         "email": "mc@manuelcorpas.com"
       },
       "homepage": "https://clawbio.ai",
-      "repository": "https://github.com/ClawBio/ClawBio",
+      "repository": "https://github.com/jdetras/clawbiocrop",
       "license": "MIT",
       "source": "./",
       "category": "life-sciences",
       "keywords": [
-        "bioinformatics",
-        "genomics",
-        "pharmacogenomics",
-        "scRNA-seq",
-        "metagenomics",
-        "ancestry",
-        "variant-annotation",
-        "proteomics",
-        "methylation",
+        "crop-genomics",
+        "plant-bioinformatics",
+        "rice",
+        "snp-seek",
+        "ricepilaf",
+        "gwas",
+        "genome-annotation",
+        "crop-ontology",
+        "breeding",
         "reproducibility"
       ]
     }

@@ -1,0 +1,6 @@
+{
+  "description": "Offline slice of plant/crop ontology terms used by the crop-ontology demo. Ids reference Plant Ontology (PO), Plant Trait Ontology (TO), PECO, and Crop Ontology (CO_320 rice).",
+  "sources": ["Plant Ontology", "Plant Trait Ontology", "PECO", "Crop Ontology", "Planteome"],
+  "example_queries": ["grain yield", "drought", "panicle", "submergence tolerance", "blast resistance"],
+  "example_terms": ["TO:0000396", "TO:0000174", "TO:0000598", "PO:0009049", "CO_320:0000040"]
+}
