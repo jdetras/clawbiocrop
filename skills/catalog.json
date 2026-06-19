@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "generated_by": "scripts/generate_catalog.py",
-  "skill_count": 87,
+  "skill_count": 92,
   "galaxy_tool_count": 8182,
   "skills": [
     {
@@ -657,6 +657,100 @@
         "target-validation-scorer",
         "omics-target-evidence-mapper"
       ]
+    },
+    {
+      "name": "crop-genome-annotation",
+      "cli_alias": null,
+      "description": "Ab-initio structural annotation of crop/plant genomic FASTA: six-frame ORF finding, gene/CDS models, GC and gene-density stats, putative product hints via a plant-protein motif table, and a GFF3 + Markdown report.",
+      "version": "0.1.0",
+      "status": "planned",
+      "has_script": true,
+      "has_tests": true,
+      "has_demo": true,
+      "demo_command": "python skills/crop-genome-annotation/crop_genome_annotation.py --demo",
+      "dependencies": [
+        "python>=3.10"
+      ],
+      "tags": [
+        "genome-annotation",
+        "gene-prediction",
+        "orf",
+        "gff3",
+        "crop",
+        "structural-annotation"
+      ],
+      "trigger_keywords": [
+        "crop genome annotation",
+        "plant gene prediction",
+        "annotate rice contig",
+        "ORF finding crop",
+        "GFF3 from crop FASTA",
+        "structural annotation plant"
+      ],
+      "chaining_partners": []
+    },
+    {
+      "name": "crop-gwas",
+      "cli_alias": null,
+      "description": "Lightweight genome-wide association scan for crop/plant breeding populations: per-SNP linear model on a genotype dosage matrix vs a quantitative trait, with effect size, p-value, genomic inflation (lambda_GC), and Bonferroni hits.",
+      "version": "0.1.0",
+      "status": "planned",
+      "has_script": true,
+      "has_tests": true,
+      "has_demo": true,
+      "demo_command": "python skills/crop-gwas/crop_gwas.py --demo",
+      "dependencies": [
+        "python>=3.10"
+      ],
+      "tags": [
+        "gwas",
+        "association",
+        "crop-breeding",
+        "quantitative-trait",
+        "manhattan",
+        "lambda-gc"
+      ],
+      "trigger_keywords": [
+        "crop GWAS",
+        "plant GWAS",
+        "association mapping",
+        "rice GWAS",
+        "QTL mapping",
+        "marker trait association"
+      ],
+      "chaining_partners": []
+    },
+    {
+      "name": "crop-ontology",
+      "cli_alias": null,
+      "description": "Search and resolve plant/crop ontology terms (Plant Ontology PO, Plant Trait Ontology TO, PECO, and Crop Ontology CO_xxx) aggregated by Planteome, so crop GWAS/QTL traits and phenotypes get standard interoperable identifiers.",
+      "version": "0.1.0",
+      "status": "planned",
+      "has_script": true,
+      "has_tests": true,
+      "has_demo": true,
+      "demo_command": "python skills/crop-ontology/crop_ontology.py --demo",
+      "dependencies": [
+        "python>=3.10"
+      ],
+      "tags": [
+        "ontology",
+        "plant-ontology",
+        "trait-ontology",
+        "crop-ontology",
+        "planteome",
+        "phenotype"
+      ],
+      "trigger_keywords": [
+        "crop ontology",
+        "plant ontology",
+        "trait ontology",
+        "Planteome",
+        "PO term",
+        "TO term",
+        "phenotype ontology"
+      ],
+      "chaining_partners": []
     },
     {
       "name": "data-extractor",
@@ -2366,6 +2460,37 @@
       "chaining_partners": []
     },
     {
+      "name": "rice-pilaf",
+      "cli_alias": null,
+      "description": "Post-GWAS/QTL analysis for rice (Oryza sativa) inspired by RicePilaf: lift GWAS peak intervals to candidate genes on IRGSP-1.0/MSU7, attach MSU/RAP annotation, summarise by trait-ontology category, and prioritise candidates.",
+      "version": "0.1.0",
+      "status": "planned",
+      "has_script": true,
+      "has_tests": true,
+      "has_demo": true,
+      "demo_command": "python skills/rice-pilaf/rice_pilaf.py --demo",
+      "dependencies": [
+        "python>=3.10"
+      ],
+      "tags": [
+        "rice",
+        "rice-pilaf",
+        "post-gwas",
+        "qtl",
+        "candidate-genes",
+        "oryza-sativa"
+      ],
+      "trigger_keywords": [
+        "RicePilaf",
+        "rice pilaf",
+        "post-GWAS rice",
+        "rice QTL candidate genes",
+        "GWAS peak to gene rice",
+        "rice post-GWAS dashboard"
+      ],
+      "chaining_partners": []
+    },
+    {
       "name": "rnaseq-de",
       "cli_alias": "rnaseq",
       "description": "Differential expression analysis for bulk RNA-seq and pseudo-bulk count matrices with QC, PCA, and contrast testing.",
@@ -2577,6 +2702,37 @@
         "add a skill",
         "build a skill",
         "make a skill"
+      ],
+      "chaining_partners": []
+    },
+    {
+      "name": "snp-seek",
+      "cli_alias": null,
+      "description": "Query the IRRI SNP-Seek database (3,000 Rice Genomes Project) for Oryza sativa SNPs by genomic region or MSU locus, with per-varietal-group allele frequencies on the Nipponbare IRGSP-1.0/MSU7 reference.",
+      "version": "0.1.0",
+      "status": "planned",
+      "has_script": true,
+      "has_tests": true,
+      "has_demo": true,
+      "demo_command": "python skills/snp-seek/snp_seek.py --demo",
+      "dependencies": [
+        "python>=3.10"
+      ],
+      "tags": [
+        "rice",
+        "snp-seek",
+        "irri",
+        "3k-rgp",
+        "oryza-sativa",
+        "variants"
+      ],
+      "trigger_keywords": [
+        "SNP-Seek",
+        "3K rice genomes",
+        "3000 rice genomes",
+        "rice SNP",
+        "IRRI variant",
+        "Oryza sativa SNP"
       ],
       "chaining_partners": []
     },

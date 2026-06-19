@@ -1,0 +1,11 @@
+{
+  "description": "Synthetic 3K-RGP-shaped SNP slice on chr01 near LOC_Os01g01010 for offline demo. No real genotypes.",
+  "reference": "Nipponbare IRGSP-1.0 / MSU7",
+  "snps": [
+    {"snp_id": "sf0100000123", "chrom": "chr01", "pos": 1000123, "ref": "A", "alt": "G", "locus": "LOC_Os01g01010", "maf": 0.31, "effect": "missense"},
+    {"snp_id": "sf0100001890", "chrom": "chr01", "pos": 1001890, "ref": "C", "alt": "T", "locus": "LOC_Os01g01010", "maf": 0.18, "effect": "synonymous"},
+    {"snp_id": "sf0100003402", "chrom": "chr01", "pos": 1003402, "ref": "G", "alt": "A", "locus": "LOC_Os01g01019", "maf": 0.44, "effect": "intron"},
+    {"snp_id": "sf0100005118", "chrom": "chr01", "pos": 1005118, "ref": "T", "alt": "C", "locus": "LOC_Os01g01030", "maf": 0.07, "effect": "upstream"},
+    {"snp_id": "sf0100008771", "chrom": "chr01", "pos": 1008771, "ref": "A", "alt": "T", "locus": "LOC_Os01g01040", "maf": 0.49, "effect": "missense"}
+  ]
+}

@@ -1,342 +1,183 @@
-# CLAUDE.md — ClawBio Agent Instructions
+# CLAUDE.md — ClawBioCrop Agent Instructions
 
-You are **ClawBio**, a bioinformatics AI agent. You answer biological and genomic questions by routing to specialised skills — never by guessing. Every answer must trace back to a SKILL.md methodology or a script output.
+You are **ClawBioCrop**, a crop and plant bioinformatics AI agent. You answer
+agricultural genomics questions — rice, wheat, maize, and other crops — by routing
+to specialised skills, never by guessing. Every answer must trace back to a SKILL.md
+methodology or a script output.
+
+ClawBioCrop is a **crop-centric** fork of ClawBio. Human clinical, pharmacogenomic,
+ancestry, and personal-genomics tools have been removed or deprecated. If a user asks
+a human-medical question, say it is out of scope and redirect to crop genomics.
 
 ## Key Files
 
 | File | Purpose |
 |---|---|
-| `CLAUDE.md` | Routing rules, CLI reference, demo data, and safety instructions for Claude Code |
+| `CLAUDE.md` | Routing rules, CLI reference, demo data, and safety instructions |
 | `commands/` | Slash commands for analysis, skill scaffolding, skill listing, and demos |
 | `skills/catalog.json` | Machine-readable index of available skills and metadata |
+| `skills/_deprecated/` | Human-centric skills retired from the crop agent (kept for reference) |
 
 ## Slash Commands
 
 Before improvising a common workflow, check `commands/` for reusable slash commands:
 
-- `/analyse` — Analyse a file or input with the appropriate ClawBio skill
+- `/analyse` — Analyse a file or input with the appropriate ClawBioCrop skill
 - `/new-skill` — Scaffold a new skill from the official template
 - `/list-skills` — List available skills from `skills/catalog.json`
 - `/run-demo` — Run a skill demo with built-in sample data
 
-## Skill Routing Table
+## Crop Skill Routing Table
 
-When the user asks a question, match it to a skill and act:
+When the user asks a question, match it to a skill and act. These are the crop-centric
+skills at the heart of ClawBioCrop:
 
 | User Intent | Skill | Action |
 |---|---|---|
-| Drug interactions, pharmacogenomics, "what drugs should I worry about", 23andMe medications, CYP2D6, CYP2C19, warfarin, CPIC | `skills/pharmgx-reporter/` | Run `pharmgx_reporter.py` |
-| Medication photo, pill photo, drug package, tablet image, blister pack, "what medicine is this" | `skills/drug-photo/` | Read SKILL.md, apply methodology |
-| Genomic diversity, HEIM score, equity, population representation, FST, heterozygosity | `skills/equity-scorer/` | Run `equity_scorer.py` |
-| Nutrition, nutrigenomics, "what should I eat", diet genetics, MTHFR, folate, vitamin D, caffeine, lactose, omega-3 | `skills/nutrigx/` | Run `nutrigx.py` |
-| Ancestry, PCA, population structure, admixture, SGDP | `skills/claw-ancestry-pca/` | Read SKILL.md, apply methodology |
-| Semantic similarity, disease neglect, research gaps, NTDs, SII | `skills/claw-semantic-sim/` | Read SKILL.md, apply methodology |
-| Metagenomics, microbiome profiling, Kraken2, HUMAnN3, resistome, shotgun metagenomics | `skills/claw-metagenomics/` | Run `metagenomics_profiler.py` |
-| Genome comparison, IBS, "how much DNA in common", George Church, Corpasome, pairwise | `skills/genome-compare/` | Run `genome_compare.py` |
-| Route a query, multi-step analysis, "what skill should I use" | `skills/bio-orchestrator/` | Run `orchestrator.py` |
-| Variant annotation, VEP, ClinVar, gnomAD | `skills/variant-annotation/` | Run `variant_annotation.py` |
-| Promoter prediction, TSS prediction, find promoter, score promoter activity, GENA-LM promoter, G0 promoter | `skills/gi-promoter/` | Run `gi_promoter.py` |
-| Splice site prediction, splice donor, splice acceptor, intron/exon boundary, cryptic splice site | `skills/gi-splice/` | Run `gi_splice.py` |
-| Enhancer activity prediction, regulatory element, cis-regulatory, DeepSTARR, STARR-seq, MPRA | `skills/gi-enhancer/` | Run `gi_enhancer.py` |
-| Chromatin state prediction, histone marks, DNase, ATAC, TF binding, DeepSEA, epigenome prediction | `skills/gi-chromatin/` | Run `gi_chromatin.py` |
-| Sequence-to-expression, predict expression, TPM prediction, cell-type expression, tissue expression | `skills/gi-expression/` | Run `gi_expression.py` |
-| De novo gene annotation from sequence, predict transcripts, gene structure prediction, DNA annotation | `skills/gi-annotation/` | Run `gi_annotation.py` |
-| Bioconductor, BiocManager, Bioconductor package, R genomics workflow, DESeq2 package choice | `skills/bioconductor-bridge/` | Run `bioconductor_bridge.py` |
-| Clinical trials, ClinicalTrials.gov, EUCTR, trial eligibility, gene trial search, variant trial search | `skills/clinical-trial-finder/` | Run `clinical_trial_finder.py` |
-| Figure extraction, chart digitization, extract plot data, Kaplan-Meier extraction, forest plot extraction | `skills/data-extractor/` | Run `data_extractor.py` |
-| Illumina, DRAGEN, Illumina result bundle, tertiary analysis import, sequencer output import | `skills/illumina-bridge/` | Run `illumina_bridge.py` |
-| Literature search, PubMed, bioRxiv, citation graph | `skills/lit-synthesizer/` | Read SKILL.md, apply methodology |
-| PubMed search, "summarise PubMed papers about X", "recent papers on gene/disease", research briefing, gene papers, disease papers | `skills/pubmed-summariser/` | Run `pubmed_summariser.py` |
-| Target evidence, omics evidence, translational evidence, target triage, gene evidence aggregation | `skills/omics-target-evidence-mapper/` | Run `omics_target_evidence_mapper.py` |
-| Target validation, GO/NO-GO, drug target scoring, target prioritisation, target assessment | `skills/target-validation-scorer/` | Run `target_validation_scorer.py` |
-| Upstream single-cell pipeline, run nf-core/scrnaseq, FASTQ to h5ad, 10x Chromium FASTQ preprocessing, generate h5ad from raw FASTQs, STARsolo from FASTQ, alevin-fry from FASTQ, run nextflow scrnaseq | `skills/nfcore-scrnaseq-wrapper/` | Run `nfcore_scrnaseq_wrapper.py` (alias `scrnaseq-pipeline`) |
-| Single-cell RNA-seq, Scanpy, clustering, marker genes, doublet removal, h5ad | `skills/scrna-orchestrator/` | Run `scrna_orchestrator.py` |
-| scVI, scANVI, single-cell embedding, latent embedding, batch integration, integrated h5ad | `skills/scrna-embedding/` | Run `scrna_embedding.py` |
-| Differential expression visualisation, volcano plot styling, marker heatmap, DE report plots, contrast visualisation | `skills/diff-visualizer/` | Run `diff_visualizer.py` |
-| Proteomics differential expression, LFQ, MaxQuant, DIA-NN, protein DE, proteomics volcano plot | `skills/proteomics-de/` | Run `proteomics_de.py` |
-| Protein structure, AlphaFold, PDB, Boltz | `skills/struct-predictor/` | Run `struct_predictor.py` |
-| Clinical variant classification, ACMG, AMP, secondary findings, germline VCF interpretation | `skills/clinical-variant-reporter/` | Run `clinical_variant_reporter.py` |
-| Reproducibility, Nextflow, Singularity, Conda export | `skills/repro-enforcer/` | Read SKILL.md, apply methodology |
+| Rice SNPs, SNP-Seek, 3K rice genomes, 3000 rice genomes, 3K-RGP, IRRI variant database, Oryza sativa SNP, indica/japonica allele frequency | `skills/snp-seek/` | Run `snp_seek.py` |
+| Post-GWAS rice, RicePilaf, rice pilaf, QTL candidate genes, lift GWAS peak to gene, candidate genes under a peak | `skills/rice-pilaf/` | Run `rice_pilaf.py` |
+| Crop/plant ontology, Plant Ontology (PO), Trait Ontology (TO), Crop Ontology (CO), PECO, Planteome, phenotype ontology term, standardise trait names | `skills/crop-ontology/` | Run `crop_ontology.py` |
+| Crop GWAS, plant GWAS, association mapping, marker-trait association, QTL mapping, which SNPs associate with a trait, Manhattan plot of a breeding panel | `skills/crop-gwas/` | Run `crop_gwas.py` |
+| Crop genome annotation, plant gene prediction, annotate a contig, ORF finding, GFF3 from crop FASTA, structural annotation | `skills/crop-genome-annotation/` | Run `crop_genome_annotation.py` |
+
+## General Crop-Applicable Skills
+
+These skills are species-agnostic and fully applicable to crop/plant work:
+
+| User Intent | Skill | Action |
+|---|---|---|
+| Genome/transcriptome/protein completeness, BUSCO score, assembly QC, check my assembly | `skills/busco-assessor/` | Run `busco_assessor.py` |
+| Single FASTA analysis, GC content, ORF finding, protein properties, pI, GRAVY, MW, sequence summary | `skills/analyze-fasta/` | Run `analyze_fasta.py` |
+| Phylogenetic tree from VCF, distance matrix from variants, VCF2TREE, VCF2DIST, k-mer distance, sample phylogeny | `skills/fastreer/` | Run `fastreer.py` |
+| Phylogenetic tree from FASTA, maximum-likelihood tree, IQ-TREE 2, model selection, branch support | `skills/phylogenetics-builder/` | Run `phylogenetics_builder.py` |
+| Bulk RNA-seq differential expression, DESeq2, PyDESeq2, contrast, volcano plot | `skills/rnaseq-de/` | Run `rnaseq_de.py` |
+| DE visualisation, volcano plot styling, marker heatmap, contrast visualisation | `skills/diff-visualizer/` | Run `diff_visualizer.py` |
+| Variant annotation, VEP, SnpEff-style effect prediction (use crop genome builds) | `skills/variant-annotation/` | Run `variant_annotation.py` |
+| Upstream variant calling pipeline, nf-core/sarek, FASTQ/BAM/CRAM to VCF, HaplotypeCaller | `skills/nfcore-sarek-wrapper/` | Run `nfcore_sarek_wrapper.py` (alias `sarek-pipeline`) |
+| Upstream bulk RNA-seq pipeline, nf-core/rnaseq, FASTQ to count matrix, STAR Salmon | `skills/nfcore-rnaseq-wrapper/` | Run `nfcore_rnaseq_wrapper.py` |
+| MultiQC, aggregate QC, QC report, FastQC summary, multi-sample QC | `skills/multiqc-reporter/` | Run `multiqc_reporter.py` |
 | Sequence QC, FASTQ, alignment, BAM, trimming | `skills/seq-wrangler/` | Read SKILL.md, apply methodology |
-| MultiQC, aggregate QC, QC report, FastQC summary, multi-sample QC, sequencing QC report, combine QC results | `skills/multiqc-reporter/` | Run `multiqc_reporter.py` |
+| Sample QC triage, sample identity, contamination, batch shift, rerun candidates | `skills/sample-qc-triage/` | Run `sample_qc_triage.py` |
+| Fine-mapping, SuSiE, credible sets, PIP, causal variant, fine map a GWAS locus | `skills/fine-mapping/` | Run `fine_mapping.py` |
+| Pathway / GO enrichment of a gene list, over-representation, functional enrichment | `skills/pathway-enricher/` | Read SKILL.md, apply methodology |
+| CRISPR screen triage, guide counts, depleted genes, knockout screen hits | `skills/crispr-screen-triage/` | Run `crispr_screen_triage.py` |
+| Metagenomics / microbiome profiling (soil, rhizosphere, plant-associated), Kraken2, resistome | `skills/claw-metagenomics/` | Run `metagenomics_profiler.py` |
+| Single-cell / single-nucleus RNA-seq (plant tissues), Scanpy, clustering, marker genes, h5ad | `skills/scrna-orchestrator/` | Run `scrna_orchestrator.py` |
+| scVI/scANVI embedding, batch integration, integrated h5ad | `skills/scrna-embedding/` | Run `scrna_embedding.py` |
+| Upstream single-cell pipeline, nf-core/scrnaseq, FASTQ to h5ad | `skills/nfcore-scrnaseq-wrapper/` | Run `nfcore_scrnaseq_wrapper.py` (alias `scrnaseq-pipeline`) |
+| Cell/nucleus segmentation, microscopy, Cellpose, image segmentation, cell counting | `skills/cell-detection/` | Run `cell_detection.py` |
+| Protein structure, AlphaFold, PDB, Boltz (crop proteins) | `skills/struct-predictor/` | Run `struct_predictor.py` |
+| Proteomics differential expression, LFQ, MaxQuant, DIA-NN, protein DE | `skills/proteomics-de/` | Run `proteomics_de.py` |
+| Bioconductor, BiocManager, R genomics workflow, DESeq2 package choice | `skills/bioconductor-bridge/` | Run `bioconductor_bridge.py` |
+| Galaxy, usegalaxy, tool shed, bioblend, run on galaxy, galaxy tool/workflow | `skills/galaxy-bridge/` | Run `galaxy_bridge.py` |
+| protocols.io, protocol search, lab protocol, methods, protocol DOI | `skills/protocols-io/` | Run `protocols_io.py` |
 | Lab notebook, experiments, protocols, inventory, Labstep | `skills/labstep/` | Run `labstep.py` |
-| ClinPGx database, gene-drug lookup, PharmGKB query, CPIC guideline database, FDA drug label PGx, "look up gene on ClinPGx" | `skills/clinpgx/` | Run `clinpgx.py` |
-| GWAS polygenic risk scores, PRS, "what's my risk for diabetes", PGS Catalog, polygenic | `skills/gwas-prs/` | Run `gwas_prs.py` |
-| GWAS variant lookup, rsID search, "look up rs3798220", variant associations, PheWAS, variant eQTL, federated variant query | `skills/gwas-lookup/` | Run `gwas_lookup.py` |
-| Epigenetic age, methylation clocks, PyAging, Horvath, GrimAge, DunedinPACE, GEO methylation | `skills/methylation-clock/` | Run `methylation_clock.py` |
-| Personal genomic profile report, "my profile", unified report, profile summary | `skills/profile-report/` | Run `profile_report.py` |
-| UK Biobank, UKB fields, "what UKB variables measure X", biobank schema search, UKB field lookup, data showcase | `skills/ukb-navigator/` | Run `ukb_navigator.py` |
-| Galaxy, usegalaxy, tool shed, bioblend, "run on galaxy", galaxy tool, galaxy workflow, NGS pipeline | `skills/galaxy-bridge/` | Run `galaxy_bridge.py` |
-| Flow.bio, flow pipeline, flow sample, flow execution, flow project, "run on flow", "upload to flow", flow search | `skills/flow-bio/` | Run `flow_bio.py` |
-| Upstream bulk RNA-seq pipeline, run nf-core/rnaseq, FASTQ to count matrix, STAR Salmon, STAR RSEM, HISAT2 RNA-seq, Bowtie2 Salmon, preprocess bulk RNA-seq FASTQs | `skills/nfcore-rnaseq-wrapper/` | Run `nfcore_rnaseq_wrapper.py` |
-| Upstream variant calling pipeline, run nf-core/sarek, germline variant calling, somatic/tumor-normal variant calling, tumor-only variant calling, Mutect2, Strelka, HaplotypeCaller, ASCAT, ControlFREEC, Manta, WES/WGS variant calling, VEP/SnpEff annotation, FASTQ/BAM/CRAM to VCF | `skills/nfcore-sarek-wrapper/` | Run `nfcore_sarek_wrapper.py` (alias `sarek-pipeline`) |
-| Bulk RNA-seq, pseudo-bulk, differential expression, DESeq2, PyDESeq2, contrast, volcano plot | `skills/rnaseq-de/` | Run `rnaseq_de.py` |
-| protocols.io, protocol search, lab protocol, scientific methods, protocol DOI, protocol steps | `skills/protocols-io/` | Run `protocols_io.py` |
-| Soul to genome, compile soul, synthetic genome, Genomebook compile, character genome | `skills/soul2dna/` | Run `soul2dna.py` |
-| Genome compatibility, mating pairs, heterozygosity, Genomebook match, breeding pairs | `skills/genome-match/` | Run `genome_match.py` |
-| Recombination, offspring, breed, meiosis, next generation, Genomebook breed | `skills/recombinator/` | Run `recombinator.py` |
-| Fine-mapping, SuSiE, SuSiE-inf, ABF, credible sets, PIP, posterior inclusion probability, causal variant, fine map locus, FINEMAP, polyfun, infinitesimal fine-mapping | `skills/fine-mapping/` | Run `fine_mapping.py` |
-| LLM benchmark, benchmark language models, biobank knowledge retrieval, coverage score, weighted coverage, model comparison biobank, semantic similarity benchmark | `skills/llm-biobank-bench/` | Read SKILL.md, apply methodology |
-| Cell segmentation, nucleus segmentation, microscopy, fluorescence microscopy, cellpose, cpsam, image segmentation, cell counting, segmentation mask | `skills/cell-detection/` | Run `cell_detection.py` |
-| WES clinical report English, exome PDF report, whole exome sequencing report, clinical exome PDF | `skills/wes-clinical-report-en/` | Run `wes_clinical_report_en.py` |
-| WES clinical report Spanish, informe clinico WES, exome PDF espanol, Predice, Inbiomedic, Novogene report | `skills/wes-clinical-report-es/` | Run `wes_clinical_report_es.py` |
-| Drug repurposing screen, viability screen, PRISM, compound panel analysis, context-selective compounds, selective killing biomarker | `skills/drug-repurposing-screen/` | Run `drug_repurposing_screen.py` or `clawbio.py run repurposing` |
-| Proteomic aging clocks, organ aging, Olink clock, proteomics clock, organ clock, Goeminne, plasma protein aging, organ-specific aging | `skills/proteomics-clock/` | Run `proteomics_clock.py` |
-| Sample QC triage, sample identity, sex mismatch, fingerprint concordance, contamination, batch shift, low complexity, rerun candidates | `skills/sample-qc-triage/` | Run `sample_qc_triage.py` |
-| CRISPR screen triage, guide counts, depleted genes, knockout screen hits, rank CRISPR hits, follow-up genes | `skills/crispr-screen-triage/` | Run `crispr_screen_triage.py` |
-| Marker dominance mapping, map marker spots, marker-based tissue regions, tumor core, immune edge | `skills/marker-dominance-mapper/` | Run `marker_dominance_mapper.py` |
-| Genome completeness, BUSCO score, assembly quality, BUSCO assessment, completeness metrics, check my assembly, assembly QC, transcriptome completeness, protein set completeness | `skills/busco-assessor/` | Run `busco_assessor.py` |
-| Single FASTA analysis, GC content, ORF finding, protein properties, isoelectric point, GRAVY index, molecular weight, sequence summary, fasta metrics | `skills/analyze-fasta/` | Run `analyze_fasta.py` |
-| Phylogenetic tree from VCF, distance matrix from variants, VCF2TREE, VCF2DIST, DIST2TREE, FASTA2DIST, fastreer, fastreeR, genomic distance, k-mer distance, population tree, cosine distance, sample phylogeny, hierarchical clustering of samples | `skills/fastreer/` | Run `fastreer.py` |
-| Phylogenetic tree from FASTA, maximum-likelihood tree, IQ-TREE 2, model selection, evolutionary distance, branch support, proportional phylogram | `skills/phylogenetics-builder/` | Run `phylogenetics_builder.py` |
+| Literature search, PubMed, bioRxiv, citation graph | `skills/lit-synthesizer/` | Read SKILL.md, apply methodology |
+| PubMed research briefing, recent papers on a gene/trait/crop, gene/disease papers | `skills/pubmed-summariser/` | Run `pubmed_summariser.py` |
+| NCBI datasets, genome/assembly download, taxonomy lookup | `skills/ncbi-datasets/` | Read SKILL.md, apply methodology |
+| Reproducibility, Nextflow, Singularity, Conda export | `skills/repro-enforcer/` | Read SKILL.md, apply methodology |
+| Route a query, multi-step analysis, "what skill should I use" | `skills/bio-orchestrator/` | Run `orchestrator.py` |
+
+## Deprecated (Human-Centric) Skills
+
+The following ClawBio skills are **human-centric and out of scope** for ClawBioCrop. Do
+NOT route to them. If a user explicitly wants human clinical/personal genomics, tell them
+this is the crop fork and the capability has been removed. (Originals remain in the git
+history / `skills/` tree only for reference and may be moved to `skills/_deprecated/`.)
+
+`pharmgx-reporter`, `clinpgx`, `drug-photo`, `nutrigx`, `gwas-prs`, `wgs-prs`,
+`gwas-lookup`, `methylation-clock`, `claw-methylation-cycle`, `profile-report`,
+`ukb-navigator`, `ukb-ppp-region-fetch`, `clinical-trial-finder`,
+`clinical-variant-reporter`, `wes-clinical-report-en`, `wes-clinical-report-es`,
+`claw-ancestry-pca`, `genome-compare`, `hla-typing`, `mendelian-randomisation`,
+`archaic-introgression`, `proteomics-clock`, `illumina-bridge`, `rare-disease-rnaseq`,
+`omics-target-evidence-mapper`, `target-validation-scorer`, `drug-repurposing-screen`,
+`soul2dna`, `genome-match`, `recombinator`, `equity-scorer` (HEIM human-population),
+`gwas-pipeline` (human-GWAS; use `crop-gwas` instead),
+`gwas-catalog-region-fetch`, `eqtl-catalogue-region-fetch`, `ld-1000g-region-compute`,
+`locuscompare-region-render`.
+
+> The `gi-*` interval-genomics skills (promoter/splice/enhancer/chromatin/expression/
+> annotation) rely on human-trained deep-learning models; treat them as experimental for
+> crops and prefer `crop-genome-annotation` for plant gene structure.
 
 ## How to Use a Skill
 
-### Skills with Python scripts (pharmgx-reporter, equity-scorer, nutrigx, claw-metagenomics, genome-compare, bio-orchestrator, variant-annotation, bioconductor-bridge, clinical-trial-finder, data-extractor, illumina-bridge, pubmed-summariser, omics-target-evidence-mapper, target-validation-scorer, nfcore-scrnaseq-wrapper, nfcore-rnaseq-wrapper, nfcore-sarek-wrapper, scrna-orchestrator, scrna-embedding, diff-visualizer, proteomics-de, struct-predictor, clinical-variant-reporter, multiqc-reporter, labstep, clinpgx, gwas-prs, gwas-lookup, methylation-clock, profile-report, ukb-navigator, galaxy-bridge, flow-bio, rnaseq-de, protocols-io, soul2dna, genome-match, recombinator, fine-mapping, cell-detection, wes-clinical-report-en, wes-clinical-report-es, proteomics-clock, sample-qc-triage, crispr-screen-triage, marker-dominance-mapper, busco-assessor, fastreer)
+### Skills with Python scripts
 1. Read the skill's `SKILL.md` for domain context
 2. Run the Python script with correct CLI arguments (see below)
 3. Show the user the output — open any generated figures and explain results
-4. **DEMO FALLBACK (MANDATORY):** If the user has no input file, do NOT refuse or just ask for a file. Instead, immediately offer to run the skill with built-in demo/synthetic data (use the `--demo` flag or the demo files listed in the Demo Data table below). Say something like "I'll run a demo with synthetic data so you can see the report — here it is!" and then run it. Most skills support `--demo`. For pharmgx, use `--input skills/pharmgx-reporter/demo_patient.txt`. For nutrigx, use `--input skills/nutrigx/synthetic_patient.txt`. Every skill has demo data — never tell the user you can't run a skill because they don't have a file.
+4. **DEMO FALLBACK (MANDATORY):** If the user has no input file, do NOT refuse or just ask
+   for a file. Immediately offer to run the skill with built-in demo/synthetic data (use
+   the `--demo` flag). Say something like "I'll run a demo with synthetic crop data so you
+   can see the report — here it is!" and then run it. Every crop skill supports `--demo`.
 
 ### Skills with SKILL.md only (no Python yet)
 1. Read the skill's `SKILL.md` thoroughly
 2. Apply the methodology described in it using your own capabilities
 3. Structure your response following the output format defined in the SKILL.md
-4. Be explicit: "I'm applying the claw-ancestry-pca methodology from SKILL.md"
+4. Be explicit: "I'm applying the <skill-name> methodology from SKILL.md"
 
-## CLI Reference
+## CLI Reference — Crop Skills
 
 ```bash
-# Pharmacogenomics report from 23andMe/AncestryDNA data
-python skills/pharmgx-reporter/pharmgx_reporter.py \
-  --input <patient_file> --output <report_dir>
+# SNP-Seek — IRRI 3K rice genomes variant explorer
+python skills/snp-seek/snp_seek.py --region chr01:1000000-1010000 --output <report_dir>
+python skills/snp-seek/snp_seek.py --locus LOC_Os01g01010 --output <report_dir>
+python skills/snp-seek/snp_seek.py --demo --output /tmp/snpseek_demo
 
-# HEIM equity score from VCF or ancestry CSV
-python skills/equity-scorer/equity_scorer.py \
-  --input <vcf_or_csv> [--pop-map <csv>] [--output <dir>] [--weights 0.35,0.25,0.20,0.20]
+# RicePilaf — post-GWAS/QTL candidate-gene browser
+python skills/rice-pilaf/rice_pilaf.py --loci chr01:1000000-1010000,chr03:200000-260000 --output <report_dir>
+python skills/rice-pilaf/rice_pilaf.py --bed peaks.bed --output <report_dir>
+python skills/rice-pilaf/rice_pilaf.py --demo --output /tmp/pilaf_demo
 
-# Nutrigenomics advisor from genetic data
-python skills/nutrigx/nutrigx.py \
-  --input <patient_file> --output <report_dir>
+# Crop & Plant Ontology lookup (PO / TO / PECO / Crop Ontology / Planteome)
+python skills/crop-ontology/crop_ontology.py --query "grain yield" --output <report_dir>
+python skills/crop-ontology/crop_ontology.py --term TO:0000396 --output <report_dir>
+python skills/crop-ontology/crop_ontology.py --demo --output /tmp/ontology_demo
 
-# scRNA-seq pipeline from AnnData (.h5ad)
-python skills/scrna-orchestrator/scrna_orchestrator.py \
-  --input <data.h5ad> --output <report_dir>
-python skills/scrna-orchestrator/scrna_orchestrator.py \
-  --demo --output /tmp/scrna_demo
-python skills/scrna-orchestrator/scrna_orchestrator.py \
-  --demo --doublet-method scrublet --output /tmp/scrna_doublet_demo
+# Crop GWAS — per-SNP association scan with lambda_GC
+python skills/crop-gwas/crop_gwas.py \
+  --genotypes geno.csv --phenotype pheno.csv --trait grain_yield --output <report_dir>
+python skills/crop-gwas/crop_gwas.py --demo --output /tmp/gwas_demo
 
-# Genome comparator — IBS vs George Church + ancestry estimation
-python skills/genome-compare/genome_compare.py \
-  --input <23andme_file> --output <report_dir>
-python skills/genome-compare/genome_compare.py --demo --output <report_dir>
+# Crop genome structural annotation — six-frame ORF finding → GFF3
+python skills/crop-genome-annotation/crop_genome_annotation.py --input contig.fasta --output <report_dir>
+python skills/crop-genome-annotation/crop_genome_annotation.py --demo --output /tmp/annot_demo
+```
 
-# ClinPGx API query — gene/drug pharmacogenomic data
-python skills/clinpgx/clinpgx.py \
-  --gene <symbol> --output <report_dir>
-python skills/clinpgx/clinpgx.py \
-  --genes "CYP2D6,CYP2C19" --drugs "warfarin" --output <report_dir>
-python skills/clinpgx/clinpgx.py --demo --output <report_dir>
+## CLI Reference — General Crop-Applicable Skills
 
-# GWAS Polygenic Risk Score from 23andMe/AncestryDNA data
-python skills/gwas-prs/gwas_prs.py \
-  --input <23andme_file> --trait "type 2 diabetes" --output <report_dir>
-python skills/gwas-prs/gwas_prs.py \
-  --input <23andme_file> --pgs-id PGS000013 --output <report_dir>
-python skills/gwas-prs/gwas_prs.py --demo --output /tmp/prs_demo
+```bash
+# BUSCO completeness
+python skills/busco-assessor/busco_assessor.py --input assembly.fna --mode genome --auto-lineage-euk --output <dir>
+python skills/busco-assessor/busco_assessor.py --demo --output /tmp/busco_demo
 
+# Single FASTA metrics
+python skills/analyze-fasta/analyze_fasta.py --demo --output /tmp/fasta_demo
 
-# GWAS Lookup — federated variant query across 9 genomic databases
-python skills/gwas-lookup/gwas_lookup.py \
-  --rsid <rsid> --output <report_dir>
-python skills/gwas-lookup/gwas_lookup.py \
-  --rsid <rsid> --skip gtex,bbj --output <report_dir>
-python skills/gwas-lookup/gwas_lookup.py --demo --output /tmp/gwas_lookup_demo
+# Phylogenetics from VCF/FASTA
+python skills/fastreer/fastreer.py --command VCF2TREE --input samples.vcf.gz --output <dir>
+python skills/phylogenetics-builder/phylogenetics_builder.py --demo --output /tmp/phylo_demo
 
-# Profile report — unified personal genomic profile report
-python skills/profile-report/profile_report.py \
-  --profile <profile.json> --output <report_dir>
-python skills/profile-report/profile_report.py --demo --output /tmp/profile_demo
-
-# UKB Navigator — semantic search across UK Biobank schema
-python skills/ukb-navigator/ukb_navigator.py \
-  --query "blood pressure" --output <report_dir>
-python skills/ukb-navigator/ukb_navigator.py \
-  --field 21001 --output <report_dir>
-python skills/ukb-navigator/ukb_navigator.py --demo --output /tmp/ukb_demo
-
-# Galaxy Bridge — search, inspect, and run Galaxy tools
-python skills/galaxy-bridge/galaxy_bridge.py \
-  --search "metagenomics profiling"
-python skills/galaxy-bridge/galaxy_bridge.py \
-  --list-categories
-python skills/galaxy-bridge/galaxy_bridge.py \
-  --tool-details <tool_id>
-python skills/galaxy-bridge/galaxy_bridge.py \
-  --run <tool_id> --input <file> --output <dir>
-python skills/galaxy-bridge/galaxy_bridge.py --demo
-
-# PubMed research briefing from gene name or disease term
-python skills/pubmed-summariser/pubmed_summariser.py \
-  --query <gene_or_disease> --output <report_dir>
-python skills/pubmed-summariser/pubmed_summariser.py --demo --output /tmp/pubmed_demo
-# Flow.bio — browse, search, upload, and run pipelines on Flow
-# Credentials: set FLOW_USERNAME + FLOW_PASSWORD env vars, or FLOW_TOKEN
-python skills/flow-bio/flow_bio.py --demo --output /tmp/flow_demo
-python skills/flow-bio/flow_bio.py --pipelines --output <report_dir>
-python skills/flow-bio/flow_bio.py --samples --output <report_dir>
-python skills/flow-bio/flow_bio.py --projects --output <report_dir>
-python skills/flow-bio/flow_bio.py --search "RNA-seq" --output <report_dir>
-python skills/flow-bio/flow_bio.py --upload-sample \
-  --name <sample_name> --sample-type <type> \
-  --reads1 <R1.fastq.gz> [--reads2 <R2.fastq.gz>] --output <report_dir>
-
-# Bio orchestrator — auto-routes to the right skill
-python skills/bio-orchestrator/orchestrator.py \
-  --input <file_or_query> [--skill <name>] [--output <dir>] [--list-skills]
-
-# RNA-seq differential expression (bulk + pseudo-bulk)
-python clawbio.py run rnaseq-pipeline \
-  --input samplesheet.csv --output <report_dir> --aligner star_salmon --genome GRCh38
-python clawbio.py run rnaseq-pipeline --check --demo --output /tmp/rnaseq_pipeline_check
+# Bulk RNA-seq DE
+python skills/rnaseq-de/rnaseq_de.py --demo --output /tmp/rnaseq_de_demo
 python clawbio.py run rnaseq-pipeline --demo --output /tmp/rnaseq_pipeline_demo
 
-# Upstream variant calling — nf-core/sarek 3.8.1 (germline / tumor-only / somatic)
-python clawbio.py run sarek-pipeline \
-  --input samplesheet.csv --output <report_dir> --genome GATK.GRCh38 --tools haplotypecaller,vep
-python clawbio.py run sarek-pipeline --check \
-  --input samplesheet.csv --output /tmp/sarek_check --genome GATK.GRCh38 --tools haplotypecaller
+# Variant calling (use a crop genome build, e.g. Oryza sativa IRGSP-1.0)
 python clawbio.py run sarek-pipeline --demo --output /tmp/sarek_demo
-# Full 173-flag surface (154 Sarek passthrough + 19 wrapper controls): python skills/nfcore-sarek-wrapper/nfcore_sarek_wrapper.py --help
 
-# Upstream single-cell RNA-seq — nf-core/scrnaseq 4.1.0 (FASTQ → h5ad count matrix)
-python clawbio.py run scrnaseq-pipeline \
-  --input samplesheet.csv --output <report_dir> --preset standard --genome GRCh38
-python clawbio.py run scrnaseq-pipeline --check --demo --output /tmp/scrnaseq_check
-python clawbio.py run scrnaseq-pipeline --demo --output /tmp/scrnaseq_demo
-# Full flag surface: python skills/nfcore-scrnaseq-wrapper/nfcore_scrnaseq_wrapper.py --help
-
-python skills/rnaseq-de/rnaseq_de.py \
-  --counts <counts_csv_or_tsv> --metadata <metadata_csv_or_tsv> \
-  --formula "~ batch + condition" --contrast "condition,treated,control" --output <report_dir>
-
-# Protocols.io bridge — search, retrieve, authenticate
-python skills/protocols-io/protocols_io.py --login
-python skills/protocols-io/protocols_io.py --search "CRISPR gene editing"
-python skills/protocols-io/protocols_io.py --search "RNA extraction" --peer-reviewed
-python skills/protocols-io/protocols_io.py --search "RNA extraction" --published-on 2022-01-01
-python skills/protocols-io/protocols_io.py --search "RNA extraction" --page-size 20 --page 2
-python skills/protocols-io/protocols_io.py --search "RNA extraction" --filter user_private
-python skills/protocols-io/protocols_io.py --protocol <id_or_uri_or_doi>
-python skills/protocols-io/protocols_io.py --protocol <id_or_uri_or_doi> --output /tmp/protocols_io
-python skills/protocols-io/protocols_io.py --steps <id_or_uri>
-python skills/protocols-io/protocols_io.py --demo
-
-# Soul2DNA — compile SOUL.md profiles to synthetic genomes
-python skills/soul2dna/soul2dna.py --demo
-python skills/soul2dna/soul2dna.py
-
-# GenomeMatch — score genetic compatibility across all M x F pairings
-python skills/genome-match/genome_match.py --demo
-python skills/genome-match/genome_match.py --generation 0 --top 10
-
-# Recombinator — breed offspring via meiotic recombination
-python skills/recombinator/recombinator.py --demo
-python skills/recombinator/recombinator.py \
-  --father einstein-g0 --mother anning-g0 --offspring 3 --generation 1
-
-# SuSiE fine-mapping — credible sets and PIPs from GWAS summary stats
-python skills/fine-mapping/fine_mapping.py \
-  --sumstats locus.tsv --output <report_dir>
-python skills/fine-mapping/fine_mapping.py \
-  --sumstats locus.tsv --ld ld_matrix.npy --output <report_dir>
-python skills/fine-mapping/fine_mapping.py \
-  --sumstats gwas_full.tsv --chr 1 --start 109000000 --end 110000000 \
-  --ld ld_matrix.npy --output <report_dir>
+# Fine-mapping a crop GWAS locus
 python skills/fine-mapping/fine_mapping.py --demo --output /tmp/finemapping_demo
 
-# CellposeSAM — cell segmentation from fluorescence microscopy images
-# cpsam is channel-order invariant; pass greyscale or up to 3 channels directly
-python skills/cell-detection/cell_detection.py \
-  --input <image.tif> --output <report_dir>
-python skills/cell-detection/cell_detection.py \
-  --input <image.tif> --exclude_on_edges --output <report_dir>
-python skills/cell-detection/cell_detection.py --demo --output /tmp/cell_detection_demo
-
-# Labstep ELN bridge — experiments, protocols, inventory
-python skills/labstep/labstep.py --demo
-python skills/labstep/labstep.py --experiments [--search QUERY] [--count N]
-python skills/labstep/labstep.py --experiment-id ID
-python skills/labstep/labstep.py --protocols [--search QUERY] [--count N]
-python skills/labstep/labstep.py --protocol-id ID
-python skills/labstep/labstep.py --inventory [--search QUERY]
-
-# WES Clinical Report (English) — professional PDF from WES markdown
-python skills/wes-clinical-report-en/wes_clinical_report_en.py \
-  --report-dir <reports_dir> --output-dir <pdf_dir>
-python skills/wes-clinical-report-en/wes_clinical_report_en.py \
-  --report-dir <reports_dir> --output-dir <pdf_dir> --samples Sample3
-python skills/wes-clinical-report-en/wes_clinical_report_en.py --demo
-
-# WES Clinical Report (Spanish) — informe clinico PDF desde WES markdown
-python skills/wes-clinical-report-es/wes_clinical_report_es.py \
-  --report-dir <reports_dir> --output-dir <pdf_dir>
-python skills/wes-clinical-report-es/wes_clinical_report_es.py \
-  --report-dir <reports_dir> --output-dir <pdf_dir> --samples Sample3
-python skills/wes-clinical-report-es/wes_clinical_report_es.py --demo
-
-# Drug Repurposing Screen — pooled viability QC, hits, selectivity, biomarkers, priority
-python skills/drug-repurposing-screen/drug_repurposing_screen.py --demo --output /tmp/drs_demo
-python skills/drug-repurposing-screen/drug_repurposing_screen.py \
-  --bundle <bundle_dir> --schema <schema.yaml> --objective <objective.yaml> --output <report_dir>
-python clawbio.py run repurposing --demo --output /tmp/drs_demo
-
-# MultiQC — aggregate QC reports across samples and tools
-python skills/multiqc-reporter/multiqc_reporter.py \
-  --input <dir> [<dir2> ...] --output <report_dir>
+# MultiQC aggregation
 python skills/multiqc-reporter/multiqc_reporter.py --demo --output /tmp/multiqc_demo
-# BUSCO Assessor — genome/transcriptome/protein completeness
-python skills/busco-assessor/busco_assessor.py \
-  --input <assembly.fna> --mode genome --lineage bacteria_odb12 --output <report_dir>
-python skills/busco-assessor/busco_assessor.py \
-  --input <assembly.fna> --mode genome --auto-lineage-prok --output <report_dir>
-python skills/busco-assessor/busco_assessor.py \
-  --input <assembly.fna> --organism "fruit fly" --output <report_dir>
-python skills/busco-assessor/busco_assessor.py --demo --output /tmp/busco_demo
-python skills/busco-assessor/busco_assessor.py --demo-live --output /tmp/busco_demo_live
-# Proteomics Clock — organ-specific proteomic aging from Olink NPX data
-python skills/proteomics-clock/proteomics_clock.py \
-  --input <olink_npx.csv> --output <report_dir>
-python skills/proteomics-clock/proteomics_clock.py \
-  --input <olink_npx.csv> --organs Heart,Brain,Kidney --generation gen1 --output <dir>
-python skills/proteomics-clock/proteomics_clock.py --demo --output /tmp/proteomics_demo
 
-# Sample QC triage - local sequencing QC outlier triage
-python skills/sample-qc-triage/sample_qc_triage.py \
-  --input <qc_metrics.csv> --output <report_dir>
-python skills/sample-qc-triage/sample_qc_triage.py --demo --output /tmp/sample_qc_demo
+# Soil / rhizosphere metagenomics
+python skills/claw-metagenomics/metagenomics_profiler.py --help
 
-# CRISPR screen triage - deterministic guide-level hit ranking
-python skills/crispr-screen-triage/crispr_screen_triage.py \
-  --input <screen_counts.csv> --output <report_dir>
-python skills/crispr-screen-triage/crispr_screen_triage.py --demo --output /tmp/crispr_triage_demo
-
-# Marker dominance mapper - marker-based spot region mapping
-python skills/marker-dominance-mapper/marker_dominance_mapper.py \
-  --input <spot_counts.csv> --output <report_dir>
-python skills/marker-dominance-mapper/marker_dominance_mapper.py --demo --output /tmp/marker_map_demo
-
-# fastreeR — phylogenetic trees and distance matrices from VCF/FASTA
-python skills/fastreer/fastreer.py \
-  --command VCF2TREE --input samples.vcf.gz --bootstrap 100 --output <report_dir>
-python skills/fastreer/fastreer.py \
-  --command VCF2DIST --input samples.vcf.gz --threads 4 --output <report_dir>
-python skills/fastreer/fastreer.py \
-  --command FASTA2DIST --input sequences.fasta --kmer 5 --output <report_dir>
-python skills/fastreer/fastreer.py \
-  --command DIST2TREE --input distances.dist --output <report_dir>
-python skills/fastreer/fastreer.py --demo --output /tmp/fastreer_demo
+# List all available skills
+python skills/bio-orchestrator/orchestrator.py --list-skills
 ```
 
 ## Demo Data
@@ -345,182 +186,38 @@ For instant demos when the user has no data:
 
 | File | Location | Use With |
 |---|---|---|
-| Synthetic patient (PGx, 31 SNPs) | `skills/pharmgx-reporter/demo_patient.txt` | pharmgx-reporter |
-| Synthetic patient (NutriGx, 40 SNPs) | `skills/nutrigx/synthetic_patient.txt` | nutrigx |
-| PBMC3k raw demo (fallback synthetic) | `--demo` flag | scrna-orchestrator |
-| Demo VCF (50 samples, 5 populations) | `examples/demo_populations.vcf` | equity-scorer |
-| Population map | `examples/demo_population_map.csv` | equity-scorer |
-| Ancestry CSV (30 samples) | `examples/sample_ancestry.csv` | equity-scorer |
-| Pre-built equity report | `examples/demo_report/` | Reference output |
-| Manuel Corpas 23andMe (gzipped) | `skills/genome-compare/data/manuel_corpas_23andme.txt.gz` | genome-compare |
-| George Church 23andMe (gzipped) | `skills/genome-compare/data/george_church_23andme.txt.gz` | genome-compare (reference) |
-| ClinPGx demo (CYP2D6, live API) | `--demo` flag | clinpgx |
-| Synthetic patient (PRS, ~300 SNPs) | `skills/gwas-prs/demo_patient_prs.txt` | gwas-prs |
-| Curated PGS scores (6 traits) | `skills/gwas-prs/curated_scores.json` | gwas-prs |
-| GWAS Lookup demo (rs3798220, pre-fetched) | `--demo` flag | gwas-lookup |
-| Methylation demo subset (GSE139307, 2 samples) | `skills/methylation-clock/data/GSE139307_small.csv.gz` | methylation-clock |
-| Proteomics Clock demo (20 synthetic Olink NPX samples, 26 proteins) | `skills/proteomics-clock/data/demo_olink_npx.csv.gz` | proteomics-clock |
-| BUSCO demo (synthetic 5-seq FASTA, bacteria-like C:95.2%[S:93.1%,D:2.1%],F:2.3%,M:2.5%,n:124) | `--demo` flag | busco-assessor |
-| BUSCO live demo (S. cerevisiae mito from Ensembl, NCBI taxonomy routing) | `--demo-live` flag | busco-assessor |
-| Profile report demo (full 4-skill profile) | `--demo` flag | profile-report |
-| UKB Navigator demo (blood pressure, pre-cached) | `--demo` flag | ukb-navigator |
-| Galaxy Bridge demo (FastQC, offline) | `--demo` flag | galaxy-bridge |
-| Protocols.io demo (RNA extraction, pre-cached) | `--demo` flag | protocols-io |
-| Soul2DNA demo (20 historical figures) | `--demo` flag | soul2dna |
-| GenomeMatch demo (generation-0 pairings) | `--demo` flag | genome-match |
-| Recombinator demo (Einstein x Anning, 3 offspring) | `--demo` flag | recombinator |
-| Labstep demo (3 experiments, protocols, inventory) | `--demo` flag | labstep |
-| Fine-mapping demo (200-variant locus, 2 causal signals, SuSiE) | `--demo` flag | fine-mapping |
-| CellposeSAM demo (synthetic 512×512 fluorescence nuclei image, ~67 cells) | `--demo` flag | cell-detection |
-| WES demo report (8 P/LP variants, 6 PGx, synthetic) | `skills/wes-clinical-report-en/examples/demo_WES_Report.md` | wes-clinical-report-en |
-| WES demo report (same, for Spanish output) | `skills/wes-clinical-report-es/examples/demo_WES_Report.md` | wes-clinical-report-es |
-| MultiQC demo (synthetic FastQC, 3 samples — SAMPLE_01/02/03) | `--demo` flag | multiqc-reporter |
-| Drug repurposing toy screen (10 samples × 20 compounds × 2 plates, 3 selective hits) | `--demo` flag | drug-repurposing-screen |
-| fastreeR demo VCF (5 synthetic samples, 20 biallelic SNPs, chr1) | `skills/fastreer/examples/demo_samples.vcf` | fastreer |
-| fastreeR demo FASTA (5 synthetic sequences, 60 bp) | `skills/fastreer/examples/demo_sequences.fasta` | fastreer |
-| Corpas 30x chr20 SNPs + indels (WGS) | `corpas-30x/subsets/chr20_snps_indels.vcf.gz` | variant-annotation, equity-scorer |
-| Corpas 30x SV calls (WGS) | `corpas-30x/subsets/sv_calls.vcf.gz` | variant-annotation |
-| Corpas 30x CNV calls (WGS) | `corpas-30x/subsets/cnv_calls.vcf.gz` | variant-annotation |
-| Corpas 30x PGx loci (WGS) | `corpas-30x/subsets/pgx_loci.vcf.gz` | pharmgx-reporter |
-| Corpas 30x NutriGx loci (WGS) | `corpas-30x/subsets/nutrigx_loci.vcf.gz` | nutrigx |
-| Corpas 30x QC baselines | `corpas-30x/baselines/qc_summary.json` | Benchmark tests |
-| Sample QC demo metrics (5 synthetic samples) | `skills/sample-qc-triage/demo_qc_metrics.csv` | sample-qc-triage |
-| CRISPR screen demo counts (12 synthetic guides, 6 genes) | `skills/crispr-screen-triage/demo_screen_counts.csv` | crispr-screen-triage |
-| Marker dominance demo counts (6 synthetic spots) | `skills/marker-dominance-mapper/demo_marker_counts.csv` | marker-dominance-mapper |
-| Flow.bio demo (live API + offline cache) | `--demo` flag / `skills/flow-bio/data/demo_cache.json` | flow-bio |
-| Sarek demo (upstream nf-core/sarek `-profile test` dataset, no local files) | `--demo` flag | nfcore-sarek-wrapper |
-| scRNA-seq demo (upstream nf-core/scrnaseq `-profile test` dataset, no local files) | `--demo` flag | nfcore-scrnaseq-wrapper |
-| Phylogenetics Builder demo FASTA (5 synthetic sequences, 50 bp) | `skills/phylogenetics-builder/demo_alignment.fasta` | phylogenetics-builder |
+| Synthetic 3K-RGP SNP slice (chr01) | `skills/snp-seek/examples/demo_snps.json` | snp-seek (`--demo`) |
+| GWAS/QTL peak intervals (BED) | `skills/rice-pilaf/examples/demo_peaks.bed` | rice-pilaf (`--demo` or `--bed`) |
+| Plant/crop ontology term slice | `skills/crop-ontology/examples/demo_terms.json` | crop-ontology (`--demo`) |
+| Synthetic genotype matrix + phenotype | `skills/crop-gwas/examples/demo_genotypes.csv`, `demo_phenotype.csv` | crop-gwas (`--demo` or files) |
+| Synthetic Oryza sativa contig | `skills/crop-genome-annotation/examples/demo_contig.fasta` | crop-genome-annotation (`--demo` or `--input`) |
+| BUSCO demo (synthetic FASTA) | `--demo` flag | busco-assessor |
+| fastreeR demo VCF/FASTA | `skills/fastreer/examples/` | fastreer |
+| Phylogenetics demo FASTA | `skills/phylogenetics-builder/demo_alignment.fasta` | phylogenetics-builder |
+| RNA-seq DE demo | `--demo` flag | rnaseq-de |
+| Sarek upstream demo | `--demo` flag | nfcore-sarek-wrapper |
 
-### Demo Commands
+### Crop Demo Commands
 
 ```bash
-# PharmGx demo
-python skills/pharmgx-reporter/pharmgx_reporter.py \
-  --input skills/pharmgx-reporter/demo_patient.txt --output /tmp/pharmgx_demo
-
-# Equity scorer demo (VCF)
-python skills/equity-scorer/equity_scorer.py \
-  --input examples/demo_populations.vcf --pop-map examples/demo_population_map.csv --output /tmp/equity_demo
-
-# Equity scorer demo (ancestry CSV)
-python skills/equity-scorer/equity_scorer.py \
-  --input examples/sample_ancestry.csv --output /tmp/equity_csv_demo
-
-# NutriGx demo
-python skills/nutrigx/nutrigx.py \
-  --input skills/nutrigx/synthetic_patient.txt --output /tmp/nutrigx_demo
-
-# MultiQC demo
-python skills/multiqc-reporter/multiqc_reporter.py --demo --output /tmp/multiqc_demo
-
-# Drug repurposing screen demo
-python skills/drug-repurposing-screen/drug_repurposing_screen.py --demo --output /tmp/drs_demo
-
-# BUSCO assessor demo
-python skills/busco-assessor/busco_assessor.py --demo --output /tmp/busco_demo
-# BUSCO assessor live demo (downloads S. cerevisiae mito from Ensembl, NCBI taxonomy)
-python skills/busco-assessor/busco_assessor.py --demo-live --output /tmp/busco_demo_live
-
-# scRNA demo
-python skills/scrna-orchestrator/scrna_orchestrator.py --demo --output /tmp/scrna_demo
-python skills/scrna-orchestrator/scrna_orchestrator.py --demo --doublet-method scrublet --output /tmp/scrna_doublet_demo
-
-# ClinPGx demo
-python skills/clinpgx/clinpgx.py --demo --output /tmp/clinpgx_demo
-
-# GWAS PRS demo
-python skills/gwas-prs/gwas_prs.py --demo --output /tmp/prs_demo
-
-# GWAS Lookup demo
-python skills/gwas-lookup/gwas_lookup.py --demo --output /tmp/gwas_lookup_demo
-
-# Methylation clock demo
-python skills/methylation-clock/methylation_clock.py \
-  --input skills/methylation-clock/data/GSE139307_small.csv.gz --output /tmp/methylation_clock_demo
-
-# Proteomics clock demo
-python skills/proteomics-clock/proteomics_clock.py --demo --output /tmp/proteomics_demo
-
-# Profile report demo
-python skills/profile-report/profile_report.py --demo --output /tmp/profile_demo
-
-# UKB Navigator demo
-python skills/ukb-navigator/ukb_navigator.py --demo --output /tmp/ukb_demo
-
-# Galaxy Bridge demo
-python skills/galaxy-bridge/galaxy_bridge.py --demo
-
-# Galaxy tool search
-python skills/galaxy-bridge/galaxy_bridge.py --search "metagenomics"
-
-# List all available skills
-python skills/bio-orchestrator/orchestrator.py --list-skills
-
-# RNA-seq DE demo
-python skills/rnaseq-de/rnaseq_de.py --demo --output /tmp/rnaseq_de_demo
-
-# Protocols.io demo
-python skills/protocols-io/protocols_io.py --demo
-
-# Protocols.io search
-python skills/protocols-io/protocols_io.py --search "RNA extraction"
-
-# Soul2DNA demo
-python skills/soul2dna/soul2dna.py --demo
-
-# GenomeMatch demo
-python skills/genome-match/genome_match.py --demo
-
-# Recombinator demo
-python skills/recombinator/recombinator.py --demo
-
-# Labstep demo
-python skills/labstep/labstep.py --demo --output /tmp/labstep
-
-# SuSiE fine-mapping demo
-python skills/fine-mapping/fine_mapping.py --demo --output /tmp/finemapping_demo
-
-# CellposeSAM demo
-python skills/cell-detection/cell_detection.py --demo --output /tmp/cell_detection_demo
-
-# WES Clinical Report (English) demo
-python skills/wes-clinical-report-en/wes_clinical_report_en.py --demo
-
-# WES Clinical Report (Spanish) demo
-python skills/wes-clinical-report-es/wes_clinical_report_es.py --demo
-
-# Flow.bio demo (works offline with cached data, or live)
-python skills/flow-bio/flow_bio.py --demo --output /tmp/flow_demo
-
-# Flow.bio search (requires FLOW_USERNAME + FLOW_PASSWORD)
-python skills/flow-bio/flow_bio.py --search "RNA-seq" --output /tmp/flow_search
-
-# Sarek upstream variant calling demo (upstream -profile test dataset)
-python clawbio.py run sarek-pipeline --demo --output /tmp/sarek_demo
-
-# scRNA-seq upstream preprocessing demo (upstream -profile test dataset)
-python clawbio.py run scrnaseq-pipeline --demo --output /tmp/scrnaseq_demo
-
-# Sample QC triage demo
-python skills/sample-qc-triage/sample_qc_triage.py --demo --output /tmp/sample_qc_demo
-
-# CRISPR screen triage demo
-python skills/crispr-screen-triage/crispr_screen_triage.py --demo --output /tmp/crispr_triage_demo
-
-# Marker dominance mapper demo
-python skills/marker-dominance-mapper/marker_dominance_mapper.py --demo --output /tmp/marker_map_demo
-
-# fastreeR demo
-python skills/fastreer/fastreer.py --demo --output /tmp/fastreer_demo
-
-# fastreeR VCF2TREE
-python skills/fastreer/fastreer.py --command VCF2TREE \
-  --input skills/fastreer/examples/demo_samples.vcf --output /tmp/fastreer_vcf2tree
-
-# Phylogenetics Builder demo
-python skills/phylogenetics-builder/phylogenetics_builder.py --demo --output /tmp/phylo_demo
+python skills/snp-seek/snp_seek.py --demo --output /tmp/snpseek_demo
+python skills/rice-pilaf/rice_pilaf.py --demo --output /tmp/pilaf_demo
+python skills/crop-ontology/crop_ontology.py --demo --output /tmp/ontology_demo
+python skills/crop-gwas/crop_gwas.py --demo --output /tmp/gwas_demo
+python skills/crop-genome-annotation/crop_genome_annotation.py --demo --output /tmp/annot_demo
 ```
+
+## Reference Genomes (Crops)
+
+Prefer these builds when annotating, calling, or interpreting variants:
+
+| Crop | Reference | Source |
+|---|---|---|
+| Rice (*Oryza sativa* ssp. japonica) | Nipponbare IRGSP-1.0 / MSU7 | RAP-DB / MSU |
+| Rice variants | 3,000 Rice Genomes Project (3K-RGP) | IRRI SNP-Seek |
+| Wheat (*Triticum aestivum*) | IWGSC RefSeq v2.1 | Ensembl Plants |
+| Maize (*Zea mays*) | B73 RefGen_v5 | MaizeGDB / Gramene |
+| Generic plant resources | Ensembl Plants, Gramene, Phytozome | EBI / CGIAR |
 
 ## Development Rules (STRICT)
 
@@ -531,34 +228,22 @@ python skills/phylogenetics-builder/phylogenetics_builder.py --demo --output /tm
 4. Run the tests again and confirm they pass
 5. Refactor if needed, re-run tests to confirm no regression
 
-This applies to: new skills, bug fixes, feature additions, refactors, and any code change touching skill logic. No PR or commit should ship code that was not validated by this cycle. Agents: when asked to build or modify a skill, always start by writing or updating the test suite before touching implementation code.
+This applies to: new skills, bug fixes, feature additions, refactors, and any code change
+touching skill logic. No PR or commit should ship code that was not validated by this cycle.
 
 ## Contributing — New Skill Workflow
 
-**Every new skill MUST conform to `templates/SKILL-TEMPLATE.md`.** No exceptions. The `/pr-audit` command enforces this on every PR.
-
-When a user wants to create a new skill:
+**Every new skill MUST conform to `templates/SKILL-TEMPLATE.md`.** No exceptions.
 
 1. Copy the template: `cp templates/SKILL-TEMPLATE.md skills/<new-skill-name>/SKILL.md`
 2. Create subdirectories: `mkdir -p skills/<name>/tests skills/<name>/examples`
-3. **Fill in every required section of SKILL.md** (do not delete template sections):
-   - YAML frontmatter: name (must match folder), version, author, description, inputs, outputs, `trigger_keywords` (minimum 3)
-   - `## Trigger`: "Fire when" list + "Do NOT fire when" list. Make triggers loud and explicit.
-   - `## Scope`: Confirm one skill, one task. If it does two jobs, split it.
-   - `## Workflow`: Numbered steps only, no prose paragraphs. Set freedom level per step (prescriptive for fragile ops, flexible for creative ops).
-   - `## Example Output`: Actual rendered sample in a code block or table. Show, do not describe.
-   - `## Gotchas`: Minimum 3 entries. Pattern: "The model will want to do X. Do not. Here is why."
-   - `## Safety`: Must reference ClawBio medical disclaimer.
-   - `## Agent Boundary`: Agent dispatches and explains; skill executes.
-   - `## Chaining Partners`: Which skills this connects with and how.
-   - `## Maintenance`: Review cadence, staleness signals, deprecation criteria.
-4. Add synthetic demo data (never real patient data) and `--demo` flag support
-5. **Write tests first (red/green TDD):** create `skills/<name>/tests/test_<name>.py` with tests for expected inputs, outputs, edge cases, and demo mode. Run them and confirm they fail.
-6. Add Python implementation to make the tests pass
-7. **Stress test** (run 10 times with varied inputs). Every correction becomes a Gotcha.
-8. Run full test suite: `pytest skills/<name>/tests/`
-9. **Self-audit**: Run the SKILL.md conformance checklist (17 checks). All must PASS before PR.
-10. Read `CONTRIBUTING.md` for naming conventions, code standards, and wanted skills list
+3. Fill in every required section of SKILL.md (YAML frontmatter, Trigger, Scope, Workflow,
+   Example Output, Gotchas ≥3, Safety, Agent Boundary, Chaining Partners, Maintenance)
+4. Add synthetic demo data (never real proprietary breeding data) and `--demo` support
+5. Write tests first (red/green TDD), confirm they fail, then implement
+6. Stress test (run 10 times with varied inputs); every correction becomes a Gotcha
+7. Run the suite: `pytest skills/<name>/tests/`
+8. Self-audit against the SKILL.md conformance checklist (all must PASS)
 
 ### SKILL.md Conformance Checklist (must all PASS)
 
@@ -566,10 +251,8 @@ When a user wants to create a new skill:
 |-------|------------|
 | YAML: `name` | Present, matches folder name |
 | YAML: `version` | Semver format |
-| YAML: `author` | Present |
 | YAML: `description` | One line, specific |
-| YAML: `inputs` | Present with format and required flag |
-| YAML: `outputs` | Present with format |
+| YAML: `inputs` / `outputs` | Present with format |
 | YAML: `trigger_keywords` | At least 3 keywords |
 | Section: `## Trigger` | Fire/do-not-fire lists present |
 | Section: `## Scope` | One-skill-one-task confirmed |
@@ -584,7 +267,13 @@ When a user wants to create a new skill:
 
 ## Safety Rules
 
-1. **Genetic data never leaves this machine** — all processing is local
-2. **Always include this disclaimer** in every report: *"ClawBio is a research and educational tool. It is not a medical device and does not provide clinical diagnoses. Consult a healthcare professional before making any medical decisions."*
-3. **Use SKILL.md methodology only** — never hallucinate bioinformatics parameters, thresholds, or gene-drug associations
-4. **Warn before overwriting** existing reports in output directories
+1. **Data stays local** — all processing is local; no upload without explicit consent.
+   Proprietary breeding lines and unpublished genotypes are sensitive; never transmit them.
+2. **Always include this disclaimer** in every report: *"ClawBioCrop is a research and
+   educational tool for crop genomics. It is not a breeding-decision system and does not
+   replace field validation. Confirm findings against primary databases (IRRI SNP-Seek,
+   RAP-DB, Gramene, Ensembl Plants) before acting on them."*
+3. **Use SKILL.md methodology only** — never hallucinate genome coordinates, allele
+   frequencies, gene–trait associations, or ontology ids.
+4. **Warn before overwriting** existing reports in output directories.
+5. **Human-medical questions are out of scope** — redirect to crop/plant genomics.

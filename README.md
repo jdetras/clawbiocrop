@@ -1,8 +1,13 @@
-<h3 align="center">ClawBio</h3>
+<h3 align="center">ClawBioCrop 🌾</h3>
 
 <p align="center">
-  <strong>The first bioinformatics-native AI agent skill library.</strong><br>
-  Built on <a href="https://github.com/openclaw/openclaw">OpenClaw</a> (180k+ GitHub stars). Local-first. Privacy-focused. Reproducible.
+  <strong>A crop &amp; plant bioinformatics-native AI agent skill library.</strong><br>
+  Crop-centric fork of <a href="https://github.com/ClawBio/ClawBio">ClawBio</a>. Built on <a href="https://github.com/openclaw/openclaw">OpenClaw</a> (180k+ GitHub stars). Local-first. Reproducible. Breeding-focused.
+</p>
+
+<p align="center">
+  <em>Crop tools: SNP-Seek (3K rice genomes) · RicePilaf post-GWAS browser · Crop GWAS · Crop genome annotation · Crop/Plant/Trait ontologies.</em><br>
+  Human clinical, pharmacogenomic, ancestry, and personal-genomics tools have been removed or deprecated — see <a href="CLAUDE.md">CLAUDE.md</a>.
 </p>
 
 <p align="center">
