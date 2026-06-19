@@ -220,7 +220,27 @@ FOLDER_TO_ALIAS = {
 }
 
 # Skill folders excluded from the public catalog (local-only / gitignored)
-EXCLUDED_FOLDERS = {"pr-audit", "wes-clinical-report-es"}
+_BASE_EXCLUDED = {"pr-audit", "wes-clinical-report-es"}
+
+# Human-centric skills removed from the ClawBioCrop agent. ClawBioCrop is a
+# crop/plant-genomics fork; clinical, pharmacogenomic, ancestry, personal-genomics,
+# and human-disease tools are out of scope and excluded from the skill catalog so
+# the agent does not route to them. The directories remain on disk for git history
+# and reference but are not part of the active ClawBioCrop skill library.
+DEPRECATED_HUMAN_FOLDERS = {
+    "pharmgx-reporter", "clinpgx", "drug-photo", "nutrigx", "gwas-prs", "wgs-prs",
+    "gwas-lookup", "methylation-clock", "claw-methylation-cycle", "profile-report",
+    "ukb-navigator", "ukb-ppp-region-fetch", "clinical-trial-finder",
+    "clinical-variant-reporter", "wes-clinical-report-en", "wes-clinical-report-es",
+    "claw-ancestry-pca", "genome-compare", "hla-typing", "mendelian-randomisation",
+    "archaic-introgression", "proteomics-clock", "illumina-bridge", "rare-disease-rnaseq",
+    "omics-target-evidence-mapper", "target-validation-scorer", "drug-repurposing-screen",
+    "soul2dna", "genome-match", "recombinator", "equity-scorer", "gwas-pipeline",
+    "gwas-catalog-region-fetch", "eqtl-catalogue-region-fetch", "ld-1000g-region-compute",
+    "locuscompare-region-render",
+}
+
+EXCLUDED_FOLDERS = _BASE_EXCLUDED | DEPRECATED_HUMAN_FOLDERS
 
 # Skills that are MVP (have working Python + are in SKILLS dict or are bio-orchestrator)
 MVP_FOLDERS = {
