@@ -1,0 +1,201 @@
+{
+  "scheme": "MSCA Postdoctoral Fellowships (Horizon Europe)",
+  "version": "2025-call",
+  "last_reviewed": "2026-06-21",
+  "note": "Award criteria, weights, thresholds, formatting and eligibility rules for MSCA Postdoctoral Fellowships. Sub-criteria wording follows the official REA evaluation form. Verify against the current Work Programme and call documents before relying on this for a live submission.",
+  "criteria": [
+    {
+      "id": "excellence",
+      "name": "Excellence",
+      "weight": 0.50,
+      "max_score": 5,
+      "part_b_section": "1",
+      "sub_criteria": [
+        {
+          "id": "E1",
+          "name": "Research objectives & beyond the state of the art",
+          "text": "Quality and pertinence of the project's research and innovation objectives (and the extent to which they are ambitious, and go beyond the state of the art).",
+          "required_elements": [
+            "clearly stated research objectives",
+            "explicit description of the state of the art",
+            "statement of how the project goes beyond the state of the art",
+            "research questions or hypotheses",
+            "ambition / novelty"
+          ],
+          "evidence_keywords": ["objective", "state of the art", "state-of-the-art", "beyond", "novel", "novelty", "ambition", "ambitious", "hypothes", "research question", "innovation", "gap"]
+        },
+        {
+          "id": "E2",
+          "name": "Soundness of methodology",
+          "text": "Soundness of the proposed methodology, including interdisciplinary approaches, consideration of the gender dimension and other diversity aspects if relevant, and the quality of the open science practices.",
+          "required_elements": [
+            "detailed methodology / approach",
+            "interdisciplinary aspects where relevant",
+            "gender dimension in research content",
+            "open science practices (open access, FAIR data, open data)",
+            "feasibility of methods"
+          ],
+          "evidence_keywords": ["methodolog", "method", "approach", "interdisciplin", "gender dimension", "sex and gender", "open science", "open access", "FAIR", "open data", "preregistration", "preprint", "reproducib"]
+        },
+        {
+          "id": "E3",
+          "name": "Training & two-way transfer of knowledge",
+          "text": "Quality and appropriateness of the training and of the two-way transfer of knowledge between the researcher and the host.",
+          "required_elements": [
+            "concrete training activities (scientific and transferable skills)",
+            "two-way transfer of knowledge researcher <-> host",
+            "complementarity of expertise"
+          ],
+          "evidence_keywords": ["training", "transfer of knowledge", "two-way", "two way", "transferable skills", "knowledge transfer", "complement", "bring to the host", "gain from the host"]
+        },
+        {
+          "id": "E4",
+          "name": "Supervision & integration in the host",
+          "text": "Quality of the supervision and of the integration in the team/institution.",
+          "required_elements": [
+            "supervisor track record and time commitment",
+            "integration in the host team / institution",
+            "mentoring arrangements"
+          ],
+          "evidence_keywords": ["supervis", "mentor", "integration", "host team", "research group", "track record", "co-supervis"]
+        }
+      ]
+    },
+    {
+      "id": "impact",
+      "name": "Impact",
+      "weight": 0.30,
+      "max_score": 5,
+      "part_b_section": "2",
+      "sub_criteria": [
+        {
+          "id": "I1",
+          "name": "Career perspectives & employability",
+          "text": "Credibility of the measures to enhance the career perspectives and employability of the researcher and contribution to his/her skills development.",
+          "required_elements": [
+            "Career Development Plan (CDP)",
+            "how the fellowship advances the researcher's career",
+            "new competences / skills acquired",
+            "target employment sectors after the fellowship"
+          ],
+          "evidence_keywords": ["career", "career development plan", "CDP", "employability", "skills development", "competenc", "professional development", "independence", "next career step"]
+        },
+        {
+          "id": "I2",
+          "name": "Dissemination, exploitation & communication",
+          "text": "Suitability and quality of the measures to maximise expected outcomes and impacts, as set out in the dissemination and exploitation plan, including communication activities.",
+          "required_elements": [
+            "dissemination plan (peer audiences)",
+            "exploitation plan / IPR management",
+            "communication & public engagement (non-specialist audiences)",
+            "identified target audiences"
+          ],
+          "evidence_keywords": ["dissemination", "exploitation", "communication", "outreach", "public engagement", "target audience", "IPR", "intellectual property", "stakeholder", "open access"]
+        },
+        {
+          "id": "I3",
+          "name": "Magnitude & importance of impact",
+          "text": "The magnitude and importance of the project's contribution to the expected scientific, societal and (where relevant) economic impacts.",
+          "required_elements": [
+            "scientific impact pathway",
+            "societal impact pathway",
+            "economic / innovation impact where relevant",
+            "scale and significance of expected outcomes"
+          ],
+          "evidence_keywords": ["impact", "societal", "economic", "scientific impact", "pathway", "benefit to society", "policy", "end user", "uptake"]
+        }
+      ]
+    },
+    {
+      "id": "implementation",
+      "name": "Quality and Efficiency of the Implementation",
+      "weight": 0.20,
+      "max_score": 5,
+      "part_b_section": "3",
+      "sub_criteria": [
+        {
+          "id": "M1",
+          "name": "Work plan, effort & risk management",
+          "text": "Quality and effectiveness of the work plan, assessment of risks and appropriateness of the effort assigned to work packages.",
+          "required_elements": [
+            "work packages with objectives, tasks and deliverables",
+            "Gantt chart / timeline",
+            "milestones and deliverables",
+            "risk assessment with mitigation/contingency",
+            "appropriate effort distribution"
+          ],
+          "evidence_keywords": ["work plan", "work package", "WP1", "WP2", "gantt", "milestone", "deliverable", "timeline", "risk", "contingency", "mitigation", "PERT", "go/no-go"]
+        },
+        {
+          "id": "M2",
+          "name": "Host capacity & infrastructure",
+          "text": "Quality and capacity of the host (institutional environment, infrastructure) to host and support the action.",
+          "required_elements": [
+            "host institutional environment described",
+            "infrastructure / facilities / equipment available",
+            "hosting and practical arrangements"
+          ],
+          "evidence_keywords": ["infrastructure", "facilit", "equipment", "host institution", "institutional environment", "resources", "capacity", "hosting arrangement"]
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "per_criterion_max": 5,
+    "decimals": 2,
+    "weighted_total_max": 100,
+    "funding_threshold_pct": 70,
+    "competitive_target_pct": 90,
+    "interpretation": [
+      {"min_pct": 90, "label": "Competitive / fundable", "note": "In most panels successful proposals score ~90% or above. Strong across all three criteria."},
+      {"min_pct": 80, "label": "Strong but borderline", "note": "Above threshold and well-written, but unlikely to be funded in a competitive panel without sharpening."},
+      {"min_pct": 70, "label": "Above threshold, not competitive", "note": "Meets the formal 70% quality threshold but would not normally be funded."},
+      {"min_pct": 0, "label": "Below threshold", "note": "Does not meet the 70% quality threshold; major rework needed."}
+    ]
+  },
+  "formatting": {
+    "part_b1_sections": ["1. Excellence", "2. Impact", "3. Quality and Efficiency of the Implementation"],
+    "part_b1_page_limit": 10,
+    "page_limit_note": "Sections 1-3 of Part B1 must fit within 10 A4 pages. Excess pages are disregarded by evaluators.",
+    "approx_words_per_page": 650,
+    "approx_word_budget": 6500,
+    "font_body": "Times New Roman (or Times / Nimbus Roman No. 9 L) 11pt minimum",
+    "font_other_min_pt": 8,
+    "margins_min_mm": 15,
+    "page_size": "A4",
+    "part_b2_includes": ["CV of the researcher", "Capacities of the participating organisations", "Ethics (if applicable)"]
+  },
+  "required_sections_checklist": [
+    {"id": "abstract", "name": "Abstract / project summary", "keywords": ["abstract", "summary"], "section": "A"},
+    {"id": "objectives", "name": "Research objectives", "keywords": ["objective"], "criterion": "excellence"},
+    {"id": "sota", "name": "State of the art", "keywords": ["state of the art", "state-of-the-art"], "criterion": "excellence"},
+    {"id": "methodology", "name": "Methodology", "keywords": ["methodolog", "method"], "criterion": "excellence"},
+    {"id": "gender_dimension", "name": "Gender dimension", "keywords": ["gender dimension", "sex and gender", "gender"], "criterion": "excellence"},
+    {"id": "open_science", "name": "Open science practices", "keywords": ["open science", "open access", "FAIR", "open data"], "criterion": "excellence"},
+    {"id": "training", "name": "Training & 2-way knowledge transfer", "keywords": ["training", "transfer of knowledge"], "criterion": "excellence"},
+    {"id": "supervision", "name": "Supervision", "keywords": ["supervis"], "criterion": "excellence"},
+    {"id": "career_development", "name": "Career Development Plan", "keywords": ["career development", "CDP", "career"], "criterion": "impact"},
+    {"id": "dissemination", "name": "Dissemination & exploitation", "keywords": ["dissemination", "exploitation"], "criterion": "impact"},
+    {"id": "communication", "name": "Communication & public engagement", "keywords": ["communication", "outreach", "public engagement"], "criterion": "impact"},
+    {"id": "impact_pathways", "name": "Impact pathways", "keywords": ["impact", "societal"], "criterion": "impact"},
+    {"id": "work_packages", "name": "Work packages / work plan", "keywords": ["work package", "work plan"], "criterion": "implementation"},
+    {"id": "gantt", "name": "Gantt chart / timeline", "keywords": ["gantt", "timeline", "milestone"], "criterion": "implementation"},
+    {"id": "risk", "name": "Risk assessment & contingency", "keywords": ["risk", "contingency", "mitigation"], "criterion": "implementation"},
+    {"id": "host_capacity", "name": "Host capacity & infrastructure", "keywords": ["infrastructure", "facilit", "host institution"], "criterion": "implementation"},
+    {"id": "ethics", "name": "Ethics issues", "keywords": ["ethics", "ethical"], "section": "ethics"},
+    {"id": "references", "name": "References / bibliography", "keywords": ["references", "bibliography", "[1]", "et al"], "section": "A"}
+  ],
+  "reviewer_tips": [
+    {"tip": "Top proposals score near-maximum on ALL three criteria. The 50/30/20 weighting does not mean you can neglect Implementation — a weak work plan sinks an otherwise excellent proposal.", "source": "Crowdhelix; TPM Science"},
+    {"tip": "An inadequate state-of-the-art is the single most common Excellence weakness: without it evaluators cannot judge novelty.", "source": "Crowdhelix"},
+    {"tip": "Implementation (20%) is the most frequently rushed section. Provide a real Gantt chart, work packages, milestones, deliverables and an honest risk table.", "source": "Crowdhelix; TPM Science"},
+    {"tip": "Applicants routinely fail to explain how the fellowship advances THEIR career. The Career Development Plan must be concrete and specific to the researcher.", "source": "Crowdhelix"},
+    {"tip": "The first page is a sales document — it must be clear, engaging and intriguing on first read because evaluators are busy.", "source": "ic3.uit.no; Medium (Chukhno)"},
+    {"tip": "Use the official evaluation form as a checklist while writing — mirror its language so evaluators can find every scored element.", "source": "REA evaluation form; Ten Simple Rules (PLOS)"},
+    {"tip": "Address the gender dimension in the research CONTENT (not just gender balance in the team) wherever relevant, and justify if not relevant.", "source": "Horizon Europe guidance"},
+    {"tip": "Open science is mandatory, not optional: commit to open access, a Data Management Plan and FAIR data.", "source": "Horizon Europe guidance"},
+    {"tip": "Make the two-way transfer of knowledge explicit: what the researcher brings to the host AND what they gain.", "source": "REA evaluation form"},
+    {"tip": "Keep within 10 pages for sections 1-3; anything beyond is not read. Respect 11pt Times New Roman and 15mm margins or risk inadmissibility.", "source": "REA Part B template"}
+  ],
+  "disclaimer": "ClawBioCrop / MSCA-Reviewer is a research and educational tool. It does not represent the European Commission, REA or any evaluation panel, and its scores are heuristic estimates only — not official evaluation results. Always verify against the current MSCA Work Programme, Guide for Applicants and call-specific evaluation form before submitting."
+}

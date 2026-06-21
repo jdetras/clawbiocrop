@@ -78,6 +78,20 @@ These skills are species-agnostic and fully applicable to crop/plant work:
 | Reproducibility, Nextflow, Singularity, Conda export | `skills/repro-enforcer/` | Read SKILL.md, apply methodology |
 | Route a query, multi-step analysis, "what skill should I use" | `skills/bio-orchestrator/` | Run `orchestrator.py` |
 
+## Research-Grant Support Skills
+
+ClawBioCrop also supports the research-funding workflow around crop-science projects:
+
+| User Intent | Skill | Action |
+|---|---|---|
+| MSCA, Marie Curie, Marie Skłodowska-Curie postdoctoral fellowship proposal review, grade my MSCA proposal, score against Excellence/Impact/Implementation, what is my proposal missing, act as an MSCA evaluation panel | `skills/msca-reviewer/` | Run `msca_reviewer.py` |
+
+```bash
+# MSCA Postdoctoral Fellowship proposal review panel + weighted % grade + feedback
+python skills/msca-reviewer/msca_reviewer.py --input proposal.md --output <report_dir>
+python skills/msca-reviewer/msca_reviewer.py --demo --output /tmp/msca_demo
+```
+
 ## Deprecated (Human-Centric) Skills
 
 The following ClawBio skills are **human-centric and out of scope** for ClawBioCrop. Do
