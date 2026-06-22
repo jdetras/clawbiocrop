@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "generated_by": "scripts/generate_catalog.py",
-  "skill_count": 57,
+  "skill_count": 58,
   "galaxy_tool_count": 8182,
   "skills": [
     {
@@ -1211,6 +1211,37 @@
         "scrna-orchestrator",
         "diff-visualizer"
       ]
+    },
+    {
+      "name": "msca-reviewer",
+      "cli_alias": null,
+      "description": "A panel of reviewer agents that scrutinise a Marie Skłodowska-Curie Actions (MSCA) Postdoctoral Fellowship proposal against the official Excellence/Impact/Implementation evaluation criteria, produce a weighted percentage grade, and return a prioritised list of what is missing and what to improve.",
+      "version": "0.1.0",
+      "status": "planned",
+      "has_script": true,
+      "has_tests": true,
+      "has_demo": true,
+      "demo_command": "python skills/msca-reviewer/msca_reviewer.py --demo",
+      "dependencies": [
+        "python>=3.10"
+      ],
+      "tags": [
+        "msca",
+        "marie-curie",
+        "grant-review",
+        "proposal-evaluation",
+        "horizon-europe"
+      ],
+      "trigger_keywords": [
+        "MSCA",
+        "Marie Curie",
+        "Marie Sklodowska-Curie",
+        "postdoctoral fellowship proposal",
+        "grade my MSCA proposal",
+        "review my grant proposal",
+        "MSCA evaluation criteria"
+      ],
+      "chaining_partners": []
     },
     {
       "name": "multiqc-reporter",
