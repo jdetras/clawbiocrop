@@ -58,6 +58,7 @@ These skills are species-agnostic and fully applicable to crop/plant work:
 | MultiQC, aggregate QC, QC report, FastQC summary, multi-sample QC | `skills/multiqc-reporter/` | Run `multiqc_reporter.py` |
 | Sequence QC, FASTQ, alignment, BAM, trimming | `skills/seq-wrangler/` | Read SKILL.md, apply methodology |
 | Sample QC triage, sample identity, contamination, batch shift, rerun candidates | `skills/sample-qc-triage/` | Run `sample_qc_triage.py` |
+| Seed viability/germination image dataset, seed bank images, 10x10 or 12x8 seed grid, germ_image_summary.csv, via.csv, germination classification model | `skills/seed-viability-workflow/` | Run `seed_viability_workflow.py` |
 | Fine-mapping, SuSiE, credible sets, PIP, causal variant, fine map a GWAS locus | `skills/fine-mapping/` | Run `fine_mapping.py` |
 | Pathway / GO enrichment of a gene list, over-representation, functional enrichment | `skills/pathway-enricher/` | Read SKILL.md, apply methodology |
 | CRISPR screen triage, guide counts, depleted genes, knockout screen hits | `skills/crispr-screen-triage/` | Run `crispr_screen_triage.py` |
@@ -172,6 +173,10 @@ python skills/fine-mapping/fine_mapping.py --demo --output /tmp/finemapping_demo
 
 # MultiQC aggregation
 python skills/multiqc-reporter/multiqc_reporter.py --demo --output /tmp/multiqc_demo
+
+# Seed viability / germination workflow (customizable --input-dir)
+python skills/seed-viability-workflow/seed_viability_workflow.py --input-dir /path/to/viability --output <dir>
+python skills/seed-viability-workflow/seed_viability_workflow.py --demo --output /tmp/seed_viability_demo
 
 # Soil / rhizosphere metagenomics
 python skills/claw-metagenomics/metagenomics_profiler.py --help
