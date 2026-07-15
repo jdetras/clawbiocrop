@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "generated_by": "scripts/generate_catalog.py",
-  "skill_count": 57,
+  "skill_count": 58,
   "galaxy_tool_count": 8182,
   "skills": [
     {
@@ -1726,6 +1726,42 @@
         "x_scvi",
         "doublet",
         "celltypist"
+      ],
+      "chaining_partners": []
+    },
+    {
+      "name": "seed-viability-workflow",
+      "cli_alias": null,
+      "description": "End-to-end data science workflow for seed-bank viability/germination image collections (10x10 and 12x8 grid layouts): directory discovery, EDA over germination manifests, and a classification/regression model that predicts seed viability from accession, storage-group, and grid metadata.",
+      "version": "0.1.0",
+      "status": "planned",
+      "has_script": true,
+      "has_tests": true,
+      "has_demo": true,
+      "demo_command": "python skills/seed-viability-workflow/seed_viability_workflow.py --demo",
+      "dependencies": [
+        "python>=3.10"
+      ],
+      "tags": [
+        "seed-viability",
+        "germination",
+        "seed-bank",
+        "phenomics",
+        "image-dataset",
+        "object-detection"
+      ],
+      "trigger_keywords": [
+        "seed viability",
+        "seed germination",
+        "germination prediction",
+        "viability prediction",
+        "seed bank image dataset",
+        "10x10 seed grid",
+        "12x8 seed grid",
+        "germination classification model",
+        "seed image manifest",
+        "via.csv",
+        "germ_image_summary.csv"
       ],
       "chaining_partners": []
     },

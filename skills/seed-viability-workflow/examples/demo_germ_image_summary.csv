@@ -1,0 +1,12 @@
+relative_path,accession_number,crop_year,replicate_number,germination_date,seed_group
+10x10/active/ACC0001_r1.jpg,ACC0001,2024,1,2024-03-15,active
+10x10/active/ACC0001_r2.jpg,ACC0001,2024,2,2024-03-15,active
+10x10/active/ACC0002_r1.jpg,ACC0002,2024,1,2024-03-15,active
+10x10/base/ACC0003_r1.jpg,ACC0003,2023,1,2023-11-02,base
+10x10/base/ACC0004_r1.jpg,ACC0004,2023,1,2023-11-02,base
+10x10/newlyharvest/ACC0005_r1.jpg,ACC0005,2025,1,2025-06-20,newlyharvest
+10x10/newlyharvest/ACC0005_r2.jpg,ACC0005,2025,2,2025-06-20,newlyharvest
+10x10/newlyharvest_geneticstocks/ACC0006_r1.jpg,ACC0006,2025,1,2025-06-21,newlyharvest_geneticstocks
+10x10/newlyharvest_glaberrima/ACC0007_r1.jpg,ACC0007,2024,1,2024-07-09,newlyharvest_glaberrima
+10x10/newlyharvest_rejub/ACC0008_r1.jpg,ACC0008,2023,1,2023-09-12,newlyharvest_rejub
+10x10/retest/2024-05-01/ACC0009_r1.jpg,ACC0009,2024,1,2024-05-01,retest

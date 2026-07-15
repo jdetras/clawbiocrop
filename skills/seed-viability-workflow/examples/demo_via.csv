@@ -1,0 +1,10 @@
+accession_number,seed_group,crop_year,viability_pct
+ACC0001,active,2024,91.5
+ACC0002,active,2024,88.0
+ACC0003,base,2023,84.2
+ACC0004,base,2023,79.8
+ACC0005,newlyharvest,2025,58.5
+ACC0006,newlyharvest_geneticstocks,2025,71.0
+ACC0007,newlyharvest_glaberrima,2024,66.5
+ACC0008,newlyharvest_rejub,2023,74.0
+ACC0009,retest,2024,52.0
